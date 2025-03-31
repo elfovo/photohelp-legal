@@ -101,16 +101,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Menu responsive
-    const navToggle = document.createElement('button');
-    navToggle.className = 'nav-toggle';
-    navToggle.innerHTML = '<i class="fas fa-bars"></i>';
-    document.querySelector('header').prepend(navToggle);
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('nav ul');
 
-    navToggle.addEventListener('click', () => {
-        const nav = document.querySelector('nav ul');
-        nav.classList.toggle('active');
-        navToggle.innerHTML = nav.classList.contains('active') ? 
-            '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    navToggle.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        // Change le symbole du bouton
+        this.querySelector('span').textContent = 
+            navMenu.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // Fermer le menu quand on clique sur un lien
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            navToggle.querySelector('span').textContent = '☰';
+        });
+    });
+
+    // Fermer le menu quand on clique en dehors
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('nav') && !e.target.closest('.nav-toggle')) {
+            navMenu.classList.remove('active');
+            navToggle.querySelector('span').textContent = '☰';
+        }
     });
 
     // Animation des sections au défilement
